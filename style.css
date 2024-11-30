@@ -33,6 +33,7 @@ header {
   padding: 2rem;
   margin-bottom: 2rem;
   color: white;
+
 }
 
 .question_container {
@@ -63,4 +64,11 @@ header {
 
 .question_header > h2 {
   display: inline;
+}
+
+.question_number {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background-color: white;
+  color: black;
 }

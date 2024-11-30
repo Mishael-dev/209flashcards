@@ -12,11 +12,18 @@ let next_question_button = document.getElementById("next_question");
 let previous_question_button = document.getElementById("previous_question");
 let show_answer_button = document.getElementById("show_answer");
 
+let question_number_element = document.getElementById(
+  "question_number_element"
+);
+
+let random_question_button = document.getElementById("random_question");
+
 class Question {
   constructor() {
     this.index = 0; // Start with the first question
     this.questions = []; // Array to hold the questions
     this.correctAnswer = 0; // Correct answer index
+    this.showQuestionNumber();
   }
 
   async getQuestions() {
@@ -51,16 +58,16 @@ class Question {
       // Highlight the correct answer label
       switch (this.correctAnswer) {
         case 1:
-          answer1_label.style.background = "green";
+          answer1_label.style.background = "#4bb543";
           break;
         case 2:
-          answer2_label.style.background = "green";
+          answer2_label.style.background = "#4bb543";
           break;
         case 3:
-          answer3_label.style.background = "green";
+          answer3_label.style.background = "#4bb543";
           break;
         case 4:
-          answer4_label.style.background = "green";
+          answer4_label.style.background = "#4bb543";
           break;
         default:
           console.log("Invalid answer index");
@@ -76,9 +83,15 @@ class Question {
     answer3_label.style.background = "white";
 
     answer4_label.style.background = "white";
+
+    answer1_checkbox.checked = false;
+    answer2_checkbox.checked = false;
+    answer3_checkbox.checked = false;
+    answer4_checkbox.checked = false;
   }
 
   nextQuestion() {
+    this.showQuestionNumber();
     this.unshow_answer();
     if (this.index < this.questions.length - 1) {
       this.index++;
@@ -89,12 +102,27 @@ class Question {
   }
 
   previousQuestion() {
+    this.showQuestionNumber();
     this.unshow_answer();
     if (this.index > 0) {
       this.index--;
       this.displayQuestion();
     } else {
       console.log("You are at the first question");
+    }
+  }
+
+  showQuestionNumber() {
+    question_number_element.innerText = this.index;
+  }
+
+  goToQeustion(number) {
+    if (number >= 0 && number < this.questions.length) {
+      this.index = number; // Update the question index
+      this.displayQuestion(); // Refresh the UI with the new question
+      this.showQuestionNumber();
+    } else {
+      console.log("Invalid question number"); // Handle out-of-bound numbers
     }
   }
 }
@@ -114,4 +142,10 @@ previous_question_button.addEventListener("click", function () {
 
 show_answer_button.addEventListener("click", function () {
   theQuestion.showAnswer();
+});
+
+random_question_button.addEventListener("click", function () {
+  const randomIndex = Math.floor(Math.random() * theQuestion.questions.length); // Generate a random number within the range of questions
+  theQuestion.goToQeustion(randomIndex); // Navigate to the random question
+  theQuestion.unshow_answer();
 });
